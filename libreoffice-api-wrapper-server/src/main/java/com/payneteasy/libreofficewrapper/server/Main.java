@@ -28,7 +28,8 @@ public class Main {
         server.setHandler(servletHandler);
 
         LOGGER.info("Adding servlet mapping to servlet path {}", JettyConfiguration.getServletPath());
-        servletHandler.addServletWithMapping(LibreofficeConverterServlet.class, JettyConfiguration.getServletPath());
+        servletHandler.addServletWithMapping(LibreofficeConverterServlet.class, JettyConfiguration.getServletPath())
+            .setInitOrder(1);
 
         return server;
     }

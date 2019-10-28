@@ -2,8 +2,8 @@ package com.payneteasy.libreofficewrapper.server.config;
 
 public class JettyConfiguration {
 
-    private static final String SERVER_PORT = "SERVER_PORT";
-    private static final String SERVER_SERVLET_PATH = "SERVER_SERVLET_PATH";
+    public static final String SERVER_PORT = "SERVER_PORT";
+    public static final String SERVER_SERVLET_PATH = "SERVER_SERVLET_PATH";
 
     private static final int DEFAULT_SERVER_PORT = 8080;
     private static final String DEFAULT_SERVLET_PATH = "/convert";

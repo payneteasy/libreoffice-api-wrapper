@@ -15,6 +15,7 @@
     <assembly.plugin.version>3.1.1</assembly.plugin.version>
 
     <jetty.version>9.4.21.v20190926</jetty.version>
+    <jodconverter.version>2.2.1</jodconverter.version>
 
     <slf4j.version>1.7.28</slf4j.version>
     <logback.version>1.2.3</logback.version>
@@ -65,6 +66,11 @@
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-servlet</artifactId>
         <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.artofsolving</groupId>
+        <artifactId>jodconverter</artifactId>
+        <version>${jodconverter.version}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
