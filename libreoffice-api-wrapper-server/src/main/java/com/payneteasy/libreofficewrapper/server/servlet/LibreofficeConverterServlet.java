@@ -67,7 +67,7 @@ public class LibreofficeConverterServlet extends HttpServlet {
             return;
         }
 
-        logger.info("Converting request intput from {} to {}", inputFormat, outputFormat);
+        logger.info("Converting request input from {} to {}", inputFormat, outputFormat);
         resp.setContentType(formatRegistry.getFormatByFileExtension(outputFormat).getMimeType());
 
         OpenOfficeConnection connection = null;
