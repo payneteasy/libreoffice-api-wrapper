@@ -1,10 +1,12 @@
 package com.payneteasy.libreofficewrapper.server;
 
-import com.payneteasy.libreofficewrapper.server.config.JettyConfiguration;
+import com.payneteasy.libreofficewrapper.server.config.IJettyConfiguration;
 import com.payneteasy.libreofficewrapper.server.servlet.LibreofficeConverterServlet;
+import com.payneteasy.libreofficewrapper.server.servlet.VersionServlet;
+import com.payneteasy.startup.parameters.StartupParametersFactory;
 
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,14 +23,20 @@ public class Main {
     }
 
     private static Server createServer() {
-        LOGGER.info("Starting Jetty server at port {}", JettyConfiguration.getPort());
-        final Server server = new Server(JettyConfiguration.getPort());
+        final IJettyConfiguration jettyConfiguration = StartupParametersFactory.getStartupParameters(IJettyConfiguration.class);
 
-        final ServletHandler servletHandler = new ServletHandler();
-        server.setHandler(servletHandler);
+        LOGGER.info("Starting Jetty server at port {}", jettyConfiguration.getPort());
+        final Server server = new Server(jettyConfiguration.getPort());
 
-        LOGGER.info("Adding servlet mapping to servlet path {}", JettyConfiguration.getServletPath());
-        servletHandler.addServletWithMapping(LibreofficeConverterServlet.class, JettyConfiguration.getServletPath())
+        final ServletContextHandler conetxt = new ServletContextHandler();
+        conetxt.setContextPath(jettyConfiguration.getServletContext());
+
+        server.setHandler(conetxt);
+
+        LOGGER.info("Adding servlet mapping to servlet path {}", jettyConfiguration.getServletPath());
+        conetxt.addServlet(LibreofficeConverterServlet.class, jettyConfiguration.getServletPath())
+            .setInitOrder(1);
+        conetxt.addServlet(VersionServlet.class, "/management/version.txt")
             .setInitOrder(1);
 
         return server;

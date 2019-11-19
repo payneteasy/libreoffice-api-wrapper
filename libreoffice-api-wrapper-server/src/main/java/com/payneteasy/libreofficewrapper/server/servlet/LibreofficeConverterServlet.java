@@ -7,7 +7,8 @@ import com.artofsolving.jodconverter.DocumentFormat;
 import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
 import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
 import com.artofsolving.jodconverter.openoffice.converter.StreamOpenOfficeDocumentConverter;
-import com.payneteasy.libreofficewrapper.server.config.LibreofficeServiceConfiguration;
+import com.payneteasy.libreofficewrapper.server.config.ILibreofficeServiceConfiguration;
+import com.payneteasy.startup.parameters.StartupParametersFactory;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -29,7 +30,11 @@ public class LibreofficeConverterServlet extends HttpServlet {
     private final Set<String> availableDocumentFormats = new HashSet<>();
     private final Set<String> availableOutputFormats = new HashSet<>();
 
+    private final ILibreofficeServiceConfiguration libreofficeServiceConfiguration;
+
     public LibreofficeConverterServlet() {
+        libreofficeServiceConfiguration = StartupParametersFactory.getStartupParameters(ILibreofficeServiceConfiguration.class);
+
         // docx and xlsx formats are not in DefaultFormatRegistry, add manually
         final DocumentFormat docxFormat = new DocumentFormat("DOCX", DocumentFamily.TEXT, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "docx");
         formatRegistry.addDocumentFormat(docxFormat);
@@ -44,7 +49,7 @@ public class LibreofficeConverterServlet extends HttpServlet {
 
         availableOutputFormats.add("pdf");
 
-        logger.info("Libreoffice server configuration: host='{}', port={}", LibreofficeServiceConfiguration.getLibreofficeHost(), LibreofficeServiceConfiguration.getLibreofficePort());
+        logger.info("Libreoffice server configuration: host='{}', port={}", libreofficeServiceConfiguration.getLibreofficeHost(), libreofficeServiceConfiguration.getLibreofficePort());
         logger.info("Available document convert formats: {} -> {} ", availableDocumentFormats, availableOutputFormats);
     }
 
@@ -72,7 +77,7 @@ public class LibreofficeConverterServlet extends HttpServlet {
 
         OpenOfficeConnection connection = null;
         try {
-            connection = new SocketOpenOfficeConnection(LibreofficeServiceConfiguration.getLibreofficeHost(), LibreofficeServiceConfiguration.getLibreofficePort());
+            connection = new SocketOpenOfficeConnection(libreofficeServiceConfiguration.getLibreofficeHost(), libreofficeServiceConfiguration.getLibreofficePort());
             connection.connect();
             final DocumentConverter converter = new StreamOpenOfficeDocumentConverter(connection, formatRegistry);
             converter.convert(req.getInputStream(), formatRegistry.getFormatByFileExtension(inputFormat), resp.getOutputStream(), formatRegistry.getFormatByFileExtension(outputFormat));
