@@ -6,7 +6,7 @@
 
   <groupId>com.payneteasy</groupId>
   <artifactId>libreoffice-api-wrapper-parent</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
   <packaging>pom</packaging>
 
   <properties>
@@ -114,4 +114,10 @@
       <url>https://maven.pkg.github.com/payneteasy/libreoffice-api-wrapper</url>
     </repository>
   </distributionManagement>
+
+  <scm>
+    <connection>scm:git:https://github.com/payneteasy/libreoffice-api-wrapper.git</connection>
+    <developerConnection>scm:git:https://github.com/payneteasy/libreoffice-api-wrapper.git</developerConnection>
+    <url>https://github.com/payneteasy/libreoffice-api-wrapper</url>
+  </scm>
 </project>
