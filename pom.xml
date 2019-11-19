@@ -5,8 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.payneteasy</groupId>
-  <artifactId>libreoffice-api-wrapper-parent</artifactId>
-  <version>1.4</version>
+  <artifactId>libreoffice-api-wrapper</artifactId>
+  <version>1.5</version>
   <packaging>pom</packaging>
 
   <properties>
@@ -111,7 +111,7 @@
     <repository>
       <id>github</id>
       <name>GitHub payneteasy Apache Maven Packages</name>
-      <url>https://maven.pkg.github.com/payneteasy/libreoffice-api-wrapper</url>
+      <url>https://maven.pkg.github.com/payneteasy</url>
     </repository>
   </distributionManagement>
 

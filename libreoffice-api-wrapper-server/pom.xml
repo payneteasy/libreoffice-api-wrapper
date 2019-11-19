@@ -9,8 +9,8 @@
 
   <parent>
     <groupId>com.payneteasy</groupId>
-    <artifactId>libreoffice-api-wrapper-parent</artifactId>
-    <version>1.4</version>
+    <artifactId>libreoffice-api-wrapper</artifactId>
+    <version>1.5</version>
   </parent>
 
   <build>
