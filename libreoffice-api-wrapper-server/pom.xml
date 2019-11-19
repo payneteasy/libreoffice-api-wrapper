@@ -10,7 +10,7 @@
   <parent>
     <groupId>com.payneteasy</groupId>
     <artifactId>libreoffice-api-wrapper</artifactId>
-    <version>1.7</version>
+    <version>1.8</version>
   </parent>
 
   <build>
