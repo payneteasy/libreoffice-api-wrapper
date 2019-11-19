@@ -6,7 +6,7 @@
 
   <groupId>com.payneteasy</groupId>
   <artifactId>libreoffice-api-wrapper</artifactId>
-  <version>1.8</version>
+  <version>1.9</version>
   <packaging>pom</packaging>
 
   <properties>
@@ -28,6 +28,8 @@
     <sonar.jacoco.reportPaths>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPaths>
     <sonar.language>java</sonar.language>
     <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+
+    <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
   <build>
@@ -106,14 +108,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <distributionManagement>
-    <repository>
-      <id>github</id>
-      <name>GitHub payneteasy Apache Maven Packages</name>
-      <url>https://maven.pkg.github.com/payneteasy/libreoffice-api-wrapper</url>
-    </repository>
-  </distributionManagement>
 
   <scm>
     <connection>scm:git:https://github.com/payneteasy/libreoffice-api-wrapper.git</connection>
