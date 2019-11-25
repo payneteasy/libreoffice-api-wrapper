@@ -29,17 +29,17 @@ public class Main {
         LOGGER.info("Starting Jetty server at port {}", jettyConfiguration.getPort());
         final Server server = new Server(jettyConfiguration.getPort());
 
-        final ServletContextHandler conetxt = new ServletContextHandler();
-        conetxt.setContextPath(jettyConfiguration.getServletContext());
+        final ServletContextHandler context = new ServletContextHandler();
+        context.setContextPath(jettyConfiguration.getServletContext());
 
-        server.setHandler(conetxt);
+        server.setHandler(context);
 
         LOGGER.info("Adding servlet mapping to servlet path {}", jettyConfiguration.getServletPath());
-        conetxt.addServlet(LibreofficeConverterServlet.class, jettyConfiguration.getServletPath())
+        context.addServlet(LibreofficeConverterServlet.class, jettyConfiguration.getServletPath())
             .setInitOrder(1);
-        conetxt.addServlet(SvgToPngConverterServlet.class, "/convert/svg-to-png")
+        context.addServlet(SvgToPngConverterServlet.class, "/convert/svg-to-png")
             .setInitOrder(1);
-        conetxt.addServlet(VersionServlet.class, "/management/version.txt")
+        context.addServlet(VersionServlet.class, "/management/version.txt")
             .setInitOrder(1);
 
         return server;
