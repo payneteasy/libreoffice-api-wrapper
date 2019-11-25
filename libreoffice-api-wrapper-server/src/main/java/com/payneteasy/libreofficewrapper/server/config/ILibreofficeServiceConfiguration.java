@@ -8,7 +8,7 @@ public interface ILibreofficeServiceConfiguration {
     String LIBREOFFICE_PORT = "LIBREOFFICE_PORT";
 
     String DEFAULT_LIBREOFFICE_HOST = "localhost";
-    String DEFAULT_LIBREOFFICE_PORT = "8100";
+    String DEFAULT_LIBREOFFICE_PORT = "5888";
 
     @AStartupParameter(name = LIBREOFFICE_HOST, value = DEFAULT_LIBREOFFICE_HOST)
     String getLibreofficeHost();
