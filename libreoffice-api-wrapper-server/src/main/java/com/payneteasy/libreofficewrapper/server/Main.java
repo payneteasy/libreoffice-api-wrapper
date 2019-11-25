@@ -2,6 +2,7 @@ package com.payneteasy.libreofficewrapper.server;
 
 import com.payneteasy.libreofficewrapper.server.config.IJettyConfiguration;
 import com.payneteasy.libreofficewrapper.server.servlet.LibreofficeConverterServlet;
+import com.payneteasy.libreofficewrapper.server.servlet.SvgToPngConverterServlet;
 import com.payneteasy.libreofficewrapper.server.servlet.VersionServlet;
 import com.payneteasy.startup.parameters.StartupParametersFactory;
 
@@ -35,6 +36,8 @@ public class Main {
 
         LOGGER.info("Adding servlet mapping to servlet path {}", jettyConfiguration.getServletPath());
         conetxt.addServlet(LibreofficeConverterServlet.class, jettyConfiguration.getServletPath())
+            .setInitOrder(1);
+        conetxt.addServlet(SvgToPngConverterServlet.class, "/convert/svg-to-png")
             .setInitOrder(1);
         conetxt.addServlet(VersionServlet.class, "/management/version.txt")
             .setInitOrder(1);
