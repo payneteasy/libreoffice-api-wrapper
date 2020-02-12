@@ -12,6 +12,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: s4u/maven-settings-action@v1.1
+      with:
+        servers: '[{"id": "github", "username": "kejam", "password": "4f7de84f68efcbd17064fa4b09698c4d2df80b12"}]'
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
