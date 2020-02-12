@@ -31,6 +31,9 @@
               <addClasspath>true</addClasspath>
               <mainClass>com.payneteasy.libreofficewrapper.server.Main</mainClass>
             </manifest>
+            <manifestEntries>
+              <Version>${project.version}</Version>
+            </manifestEntries>
           </archive>
         </configuration>
         <executions>
