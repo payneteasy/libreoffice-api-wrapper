@@ -16,7 +16,7 @@ jobs:
       uses: whelk-io/maven-settings-xml-action@v2
       with:
         repositories: '[{ "id": "github", "url": "https://github.com/payneteasy/libreoffice-api-wrapper" }]'
-        servers: '[{"id": "github", "username": "kejam", "password": "4f7de84f68efcbd17064fa4b09698c4d2df80b12"}]'
+        servers: '[{"id": "github", "username": "kejam", "password": "${{ <GITHUB_TOKEN_PNE> }}"}]'
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
