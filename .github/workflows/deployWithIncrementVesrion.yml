@@ -1,6 +1,9 @@
-name: Java CI
+name: Release
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -21,7 +24,7 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy
+      run: mvn -B -e -Dmaven.wagon.http.pool=false clean deploy
       env:
         GITHUB_TOKEN: 4f7de84f68efcbd17064fa4b09698c4d2df80b12
 
