@@ -23,6 +23,6 @@ jobs:
     - name: Publish to GitHub Packages Apache Maven
       run: mvn deploy
       env:
-        GITHUB_TOKEN: ${{ TOKEN }}
+        GITHUB_TOKEN: 4f7de84f68efcbd17064fa4b09698c4d2df80b12
 
     
