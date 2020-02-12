@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: maven-settings-xml-action
-      uses: s4u/maven-settings-xml-action@v2
+      uses: s4u/maven-settings-action@v1.1
       with:
         servers: '[{"id": "github", "username": "kejam", "password": "${{ secrets.GITHUB_TOKEN_PNE }}"}]'
     - name: Set up JDK 1.8
