@@ -129,6 +129,14 @@
     </dependencies>
   </dependencyManagement>
 
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub payneteasy Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/payneteasy/libreoffice-api-wrapper</url>
+    </repository>
+  </distributionManagement>
+
   <scm>
     <connection>scm:git:https://github.com/payneteasy/libreoffice-api-wrapper.git</connection>
     <developerConnection>scm:git:https://github.com/payneteasy/libreoffice-api-wrapper.git</developerConnection>
