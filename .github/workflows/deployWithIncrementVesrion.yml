@@ -30,6 +30,8 @@ jobs:
 
     - name: Publish to GitHub Packages Apache Maven
       run: mvn deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_PNE }}
 
 
 
