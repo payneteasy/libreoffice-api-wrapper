@@ -29,7 +29,6 @@
     <sonar.language>java</sonar.language>
     <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 
-    <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
   <build>
