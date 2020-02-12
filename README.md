@@ -32,8 +32,7 @@ java -DSERVER_PORT=8081 -jar libreoffice-api-wrapper-server-1.0-jar-with-depende
 * Настроить .m2/settings.xml для github https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-apache-maven-for-use-with-github-packages#authenticating-with-the-github_token
 * Выполнить локально команды:
 ```bash 
- mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.
-\${parsedVersion.nextIncrementalVersion} versions:commit
+ mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} versions:commit
 ```
 ```bash 
  mvn clean package
