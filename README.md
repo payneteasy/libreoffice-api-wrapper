@@ -35,7 +35,7 @@ java -DSERVER_PORT=8081 -jar libreoffice-api-wrapper-server-1.0-jar-with-depende
 ```bash 
  mvn -Dmaven.test.skip=true package
 ```
-* Далее необходимо запустить libreoffice-api-wrapper-server.jar и докер для тестов: 
+Далее необходимо запустить libreoffice-api-wrapper-server.jar и докер для тестов: 
 
 ```bash 
  java -jar libreoffice-api-wrapper-server/target/libreoffice-api-wrapper-server-{current_version}-jar-with-dependencies.jar
@@ -57,3 +57,4 @@ java -DSERVER_PORT=8081 -jar libreoffice-api-wrapper-server-1.0-jar-with-depende
 ```bash 
  mvn deploy
 ```
+Сделай коммит после деплоя!!!!
