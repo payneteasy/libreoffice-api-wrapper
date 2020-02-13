@@ -31,12 +31,29 @@ java -DSERVER_PORT=8081 -jar libreoffice-api-wrapper-server-1.0-jar-with-depende
 
 * Настроить .m2/settings.xml для github https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-apache-maven-for-use-with-github-packages#authenticating-with-the-github_token
 * Выполнить локально команды:
+
+```bash 
+ mvn -Dmaven.test.skip=true package
+```
+* Далее необходимо запустить libreoffice-api-wrapper-server.jar и докер для тестов: 
+
+```bash 
+ java -jar libreoffice-api-wrapper-server/target/libreoffice-api-wrapper-server-{current_version}-jar-with-dependencies.jar
+```
+
+```bash 
+ docker run -t --name libreoffice -p 8100:8100 hdejager/libreoffice-api
+```
+
+```bash 
+ mvn test
+```
+Релизить только, если тесты прошли успешно
+
 ```bash 
  mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} versions:commit
 ```
+
 ```bash 
- mvn clean package
-```
-```bash 
-mvn deploy
+ mvn deploy
 ```
