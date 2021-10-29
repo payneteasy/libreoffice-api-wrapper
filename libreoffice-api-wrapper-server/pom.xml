@@ -11,9 +11,6 @@
     <version>3.1.5</version>
   </parent>
 
-
-
-
   <build>
     <plugins>
       <plugin>
@@ -114,6 +111,11 @@
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>batik-codec</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <distributionManagement>
@@ -123,6 +125,5 @@
       <url>https://maven.pkg.github.com/payneteasy/libreoffice-api-wrapper</url>
     </repository>
   </distributionManagement>
-
 
 </project>
