@@ -1,29 +1,25 @@
 package com.payneteasy.libreofficewrapper.server.servlet;
 
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -32,75 +28,92 @@ import static org.junit.Assert.assertFalse;
  * Attention!
  * You must start docker with libreoffice and start java! See more information in readme.md
  */
+@SuppressWarnings("squid:S2699")
 public class LibreOfficeConverterServletTest {
-
 
     @Test
     public void testVersionController() throws IOException {
         final URL url = new URL("http://localhost:8080/converter/management/version.txt");
-        final HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-        con.setConnectTimeout(5000);
-        con.setReadTimeout(5000);
-        final BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setConnectTimeout(5000);
+        connection.setReadTimeout(5000);
+
+        final BufferedReader in = new BufferedReader(
+            new InputStreamReader(connection.getInputStream())
+        );
+
         String inputLine;
         final StringBuilder content = new StringBuilder();
         while ((inputLine = in.readLine()) != null) {
             content.append(inputLine);
         }
-        System.out.println("Version is " + content.toString());
+
+        System.out.println("Version is " + content);
+
         assertFalse(content.toString().isEmpty());
     }
 
     @Test
-    public void testLibreConverter() throws IOException {
-        final URL url = new URL("http://localhost:8080/converter/convert");
-        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setConnectTimeout(5000);
-        connection.setReadTimeout(5000);
-        final InputStream file = LibreOfficeConverterServletTest.class.getClassLoader().getResourceAsStream("src/test/resources/example.docx");
-        final HashMap<String, String> params = new HashMap<>();
-        params.put("inputFormat", "docx");
-        params.put("outputFormat", "pdf");
-        params.put("inputStream", String.valueOf(file));
-        connection.setDoOutput(true);
-        final DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-        out.writeBytes(getParamsString(params));
-        out.flush();
-        out.close();
-        Files.deleteIfExists(Paths.get("src/test/resources/convert.pdf"));
-        final InputStream inputStream = connection.getInputStream();
-        final FileOutputStream outputStream = new FileOutputStream(new File("src/test/resources/convert.pdf"));
-        int bytesRead = -1;
-        byte[] buffer = new byte[4096];
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
+    public void testLibreofficeConverter() throws Exception {
+        try (final CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            final URI uri = new URIBuilder("http://localhost:8080/converter/convert")
+                .addParameter("inputFormat", "docx")
+                .addParameter("outputFormat", "pdf")
+                .build();
+
+            final HttpPost post = new HttpPost(uri);
+            post.setEntity(
+                new InputStreamEntity(
+                    new FileInputStream(
+                        Paths.get("src/test/resources/example.docx").toFile()
+                    ),
+                    ContentType.create(
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    )
+                )
+            );
+
+            doPost(httpClient, post, "src/test/resources/example.pdf");
         }
-        outputStream.close();
-        inputStream.close();
-        connection.disconnect();
     }
 
-    public static String getParamsString(final Map<String, String> params) {
-        final StringBuilder result = new StringBuilder();
+    @Test
+    public void testSvgToPngConverter() throws Exception {
+        try (final CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            final HttpPost post = new HttpPost("http://localhost:8080/converter/convert/svg-to-png");
+            post.setEntity(
+                new InputStreamEntity(
+                    new FileInputStream(
+                        Paths.get("src/test/resources/example.svg").toFile()
+                    ),
+                    ContentType.create("text/plain")
+                )
+            );
 
-        params.forEach((name, value) -> {
-            try {
-                result.append(URLEncoder.encode(name, "UTF-8"));
-                result.append('=');
-                result.append(URLEncoder.encode(value.toString(), "UTF-8"));
-                result.append('&');
-            } catch (final UnsupportedEncodingException e) {
-                e.printStackTrace();
+            doPost(httpClient, post, "src/test/resources/example.png");
+        }
+    }
+
+    private void doPost(
+        CloseableHttpClient httpClient,
+        HttpPost httpPost,
+        String outputFilePath
+    ) throws IOException {
+        try (final CloseableHttpResponse response = httpClient.execute(httpPost);
+             final InputStream connectionInputStream = response.getEntity().getContent()
+        ) {
+            final Path outputPath = Paths.get(outputFilePath);
+            Files.deleteIfExists(outputPath);
+
+            final FileOutputStream fileOutputStream = new FileOutputStream(outputPath.toFile());
+            int bytesRead;
+            byte[] buffer = new byte[4096];
+            while ((bytesRead = connectionInputStream.read(buffer)) != -1) {
+                fileOutputStream.write(buffer, 0, bytesRead);
             }
-        });
-
-        final String resultString = result.toString();
-        return !resultString.isEmpty()
-            ? resultString.substring(0, resultString.length() - 1)
-            : resultString;
+            fileOutputStream.close();
+        }
     }
-
-
 }
