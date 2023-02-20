@@ -20,14 +20,10 @@ jobs:
       run: mvn -B package  -Dmaven.test.skip=true package --file pom.xml
 
     - name: Start proxy service(libreoffice)
-      run: java -jar libreoffice-api-wrapper-server-3.1.7-jar-with-dependencies.jar
+      run: java -jar libreoffice-api-wrapper-server-3.1.8-jar-with-dependencies.jar
 
     - name: Start docker
       run: docker run -t --name libreoffice -p 8100:8100 hdejager/libreoffice-api
 
     - name:
       run: mvn test
-
-
-
-    
