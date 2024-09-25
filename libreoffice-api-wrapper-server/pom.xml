@@ -7,6 +7,8 @@
 
   <artifactId>libreoffice-api-wrapper-server</artifactId>
   <packaging>jar</packaging>
+  <name>LibreOffice API wrapper project</name>
+  <description>POM of LibreOffice API wrapper project</description>
 
   <parent>
     <groupId>com.payneteasy</groupId>
@@ -66,30 +68,37 @@
 
   <dependencies>
     <dependency>
+      <!--Justification: HTTP server used for incoming requests of documents and images conversions-->
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
     </dependency>
     <dependency>
+      <!--Justification: Servlet API implementation for Jetty HTTP server-->
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
     </dependency>
     <dependency>
+      <!--Justification: Library for conversation between different office documents formats, using OpenOffice.org-->
       <groupId>com.artofsolving</groupId>
       <artifactId>jodconverter</artifactId>
     </dependency>
     <dependency>
+      <!--Justification: Simple Logging Facade for Java (SLF4J)-->
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
     <dependency>
+      <!--Justification: Bridge to use JCL (Jakarta Commons Logging) via SLF4J-->
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
     </dependency>
     <dependency>
+      <!--Justification: Implementation of the SLF4J API for Logback logging framework-->
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
     </dependency>
     <dependency>
+      <!--Justification: Application configuration via environment variables-->
       <groupId>com.payneteasy</groupId>
       <artifactId>startup-parameters</artifactId>
     </dependency>
@@ -99,18 +108,22 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <!--Justification: Batik utility library (used by batik-transcoder)-->
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>batik-util</artifactId>
     </dependency>
     <dependency>
+      <!--Justification: Batik DOM implementation (used by batik-transcoder)-->
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>batik-dom</artifactId>
     </dependency>
     <dependency>
+      <!--Justification: Batik generic API for transcoding an input to an output (used for conversation different images to PNG format)-->
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>batik-transcoder</artifactId>
     </dependency>
     <dependency>
+      <!--Justification: Batik codecs of different image formats (used by batik-transcoder)-->
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>batik-codec</artifactId>
     </dependency>

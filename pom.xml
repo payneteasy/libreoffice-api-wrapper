@@ -6,6 +6,8 @@
   <artifactId>libreoffice-api-wrapper</artifactId>
   <version>3.1.8</version>
   <packaging>pom</packaging>
+  <name>LibreOffice API wrapper parent project</name>
+  <description>POM of LibreOffice API wrapper parent project</description>
 
   <properties>
     <surefire.plugin.version>2.22.2</surefire.plugin.version>
@@ -71,49 +73,58 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <!--Justification: HTTP server used for incoming requests of documents and images conversions-->
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-server</artifactId>
         <version>${jetty.version}</version>
       </dependency>
       <dependency>
+        <!--Justification: Servlet API implementation for Jetty HTTP server-->
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-servlet</artifactId>
         <version>${jetty.version}</version>
       </dependency>
       <dependency>
+        <!--Justification: Library for conversation between different office documents formats, using OpenOffice.org-->
         <groupId>com.artofsolving</groupId>
         <artifactId>jodconverter</artifactId>
         <version>${jodconverter.version}</version>
-        <!-- Fix of CVE-2021-29425 (part 1 of 2) -->
+        <!-- [begin] Fix of CVE-2021-29425 (part 1 of 2) -->
         <exclusions>
           <exclusion>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
           </exclusion>
         </exclusions>
+        <!-- [end] Fix of CVE-2021-29425 (part 1 of 2) -->
       </dependency>
-      <!-- Fix of CVE-2021-29425 (part 2 of 2) -->
+      <!-- [begin] Fix of CVE-2021-29425 (part 2 of 2) -->
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>2.7</version>
       </dependency>
+      <!-- [end] Fix of CVE-2021-29425 (part 2 of 2) -->
       <dependency>
+        <!--Justification: Simple Logging Facade for Java (SLF4J)-->
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
       <dependency>
+        <!--Justification: Bridge to use JCL (Jakarta Commons Logging) via SLF4J-->
         <groupId>org.slf4j</groupId>
         <artifactId>jcl-over-slf4j</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
       <dependency>
+        <!--Justification: Implementation of the SLF4J API for Logback logging framework-->
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
         <version>${logback.version}</version>
       </dependency>
       <dependency>
+        <!--Justification: Application configuration via environment variables-->
         <groupId>com.payneteasy</groupId>
         <artifactId>startup-parameters</artifactId>
         <version>${startup.parameters.version}</version>
@@ -125,21 +136,25 @@
       </dependency>
 
       <dependency>
+        <!--Justification: Batik utility library (used by batik-transcoder)-->
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-util</artifactId>
         <version>${batik.version}</version>
       </dependency>
       <dependency>
+        <!--Justification: Batik DOM implementation (used by batik-transcoder)-->
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-dom</artifactId>
         <version>${batik.version}</version>
       </dependency>
       <dependency>
+        <!--Justification: Batik generic API for transcoding an input to an output (used for conversation different images to PNG format)-->
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-transcoder</artifactId>
         <version>${batik.version}</version>
       </dependency>
       <dependency>
+        <!--Justification: Batik codecs of different image formats (used by batik-transcoder)-->
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-codec</artifactId>
         <version>${batik.version}</version>
