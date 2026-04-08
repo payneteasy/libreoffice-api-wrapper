@@ -11,10 +11,10 @@
 
   <properties>
     <surefire.plugin.version>2.22.2</surefire.plugin.version>
-    <compiler.plugin.version>3.8.1</compiler.plugin.version>
-    <assembly.plugin.version>3.1.1</assembly.plugin.version>
+    <compiler.plugin.version>3.15.0</compiler.plugin.version>
+    <assembly.plugin.version>3.8.0</assembly.plugin.version>
 
-    <jetty.version>9.4.57.v20241219</jetty.version>
+    <jetty.version>12.1.8</jetty.version>
 
     <jodconverter.version>2.2.1</jodconverter.version>
     <startup.parameters.version>1.0-5</startup.parameters.version>
@@ -43,8 +43,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${compiler.plugin.version}</version>
         <configuration>
-          <source>8</source>
-          <target>8</target>
+          <release>21</release>
         </configuration>
       </plugin>
       <plugin>
@@ -93,8 +92,8 @@
       </dependency>
       <dependency>
         <!--Justification: Servlet API implementation for Jetty HTTP server-->
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-servlet</artifactId>
+        <groupId>org.eclipse.jetty.ee10</groupId>
+        <artifactId>jetty-ee10-servlet</artifactId>
         <version>${jetty.version}</version>
       </dependency>
       <dependency>

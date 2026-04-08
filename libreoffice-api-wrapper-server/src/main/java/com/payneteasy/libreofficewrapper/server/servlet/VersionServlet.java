@@ -1,13 +1,14 @@
 package com.payneteasy.libreofficewrapper.server.servlet;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.payneteasy.libreofficewrapper.server.Main;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import com.payneteasy.libreofficewrapper.server.Main;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class VersionServlet extends HttpServlet {
 

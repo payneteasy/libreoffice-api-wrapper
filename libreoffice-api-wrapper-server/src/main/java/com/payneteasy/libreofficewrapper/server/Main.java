@@ -6,8 +6,8 @@ import com.payneteasy.libreofficewrapper.server.servlet.SvgToPngConverterServlet
 import com.payneteasy.libreofficewrapper.server.servlet.VersionServlet;
 import com.payneteasy.startup.parameters.StartupParametersFactory;
 
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

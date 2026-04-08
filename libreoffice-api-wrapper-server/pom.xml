@@ -74,8 +74,8 @@
     </dependency>
     <dependency>
       <!--Justification: Servlet API implementation for Jetty HTTP server-->
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-servlet</artifactId>
+      <groupId>org.eclipse.jetty.ee10</groupId>
+      <artifactId>jetty-ee10-servlet</artifactId>
     </dependency>
     <dependency>
       <!--Justification: Library for conversation between different office documents formats, using OpenOffice.org-->
