@@ -1,29 +1,77 @@
-name: Release
+name: Build and test
 
 on:
-  push
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v1
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
       with:
-        java-version: 1.8
-        
+        java-version: '21'
+        distribution: temurin
+        cache: maven
 
     - name: Build without test
-      run: mvn -B package  -Dmaven.test.skip=true package --file pom.xml
+      run: mvn -B --no-transfer-progress -Dmaven.test.skip=true clean package
 
-    - name: Start proxy service(libreoffice)
-      run: java -jar libreoffice-api-wrapper-server/target/libreoffice-api-wrapper-server-3.1.8-jar-with-dependencies.jar
+    - name: Start docker (libreoffice)
+      run: |
+        docker run -d --name libreoffice -p 8100:8100 hdejager/libreoffice-api
+        for _ in $(seq 1 60); do
+          if bash -c "</dev/tcp/127.0.0.1/8100" 2>/dev/null; then
+            echo "libreoffice is listening on 8100"
+            exit 0
+          fi
+          sleep 2
+        done
+        echo "libreoffice did not open port 8100 within 120s"
+        docker logs libreoffice
+        exit 1
 
-    - name: Start docker
-      run: docker run -t --name libreoffice -p 8100:8100 hdejager/libreoffice-api
+    - name: Start proxy service (libreoffice-api-wrapper)
+      run: |
+        jar=$(ls libreoffice-api-wrapper-server/target/*-jar-with-dependencies.jar)
+        echo "starting $jar"
+        nohup java -jar "$jar" > wrapper.log 2>&1 &
+        for _ in $(seq 1 30); do
+          if curl -sf http://localhost:8080/converter/management/version.txt; then
+            echo "wrapper is up"
+            exit 0
+          fi
+          sleep 2
+        done
+        echo "wrapper did not answer on port 8080 within 60s"
+        cat wrapper.log
+        exit 1
 
-    - name:
-      run: mvn test
+    - name: Run tests
+      run: mvn -B --no-transfer-progress test
+
+    - name: Dump logs
+      if: failure()
+      run: |
+        echo "===== wrapper.log ====="
+        cat wrapper.log || true
+        echo "===== docker logs libreoffice ====="
+        docker logs libreoffice || true
+
+    - name: Upload surefire reports
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: surefire-reports
+        path: libreoffice-api-wrapper-server/target/surefire-reports/
+        if-no-files-found: ignore

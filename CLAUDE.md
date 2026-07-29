@@ -64,5 +64,5 @@ All runtime config flows through `com.payneteasy:startup-parameters` and the two
 ### Module/version coupling to be aware of
 
 - The parent `pom.xml` and `libreoffice-api-wrapper-server/pom.xml` both carry the same `<version>`. The release workflow uses `versions:set` (which updates both) — don't hand-edit one without the other.
-- The GitHub Actions workflow at `.github/workflows/deployWithIncrementVesrion.yml` hard-codes the jar version in its `java -jar ...` step. When bumping the version, that file may need updating too.
+- The GitHub Actions workflow at `.github/workflows/deployWithIncrementVesrion.yml` builds, starts the docker backend + the wrapper jar and runs the same integration tests as locally. It resolves the jar via the `*-jar-with-dependencies.jar` glob, so a version bump needs no changes there. Despite its file name it does not deploy anything.
 - Tests reference `src/test/resources/example.docx` / `example.svg` (committed) and write `example.pdf` / `example.png` outputs there at runtime (gitignored / regenerated on each run).
