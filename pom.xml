@@ -24,7 +24,7 @@
 
     <junit.version>4.13.1</junit.version>
 
-    <jacoco.version>0.8.0</jacoco.version>
+    <jacoco.version>0.8.15</jacoco.version>
 
     <batik.version>1.17</batik.version>
 

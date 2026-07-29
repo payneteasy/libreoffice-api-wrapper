@@ -30,16 +30,7 @@ jobs:
     - name: Start docker (libreoffice)
       run: |
         docker run -d --name libreoffice -p 8100:8100 hdejager/libreoffice-api
-        for _ in $(seq 1 60); do
-          if bash -c "</dev/tcp/127.0.0.1/8100" 2>/dev/null; then
-            echo "libreoffice is listening on 8100"
-            exit 0
-          fi
-          sleep 2
-        done
-        echo "libreoffice did not open port 8100 within 120s"
-        docker logs libreoffice
-        exit 1
+        docker inspect -f 'container status: {{.State.Status}}' libreoffice
 
     - name: Start proxy service (libreoffice-api-wrapper)
       run: |
@@ -55,6 +46,24 @@ jobs:
         done
         echo "wrapper did not answer on port 8080 within 60s"
         cat wrapper.log
+        exit 1
+
+    - name: Wait for libreoffice to convert
+      run: |
+        docx=libreoffice-api-wrapper-server/src/test/resources/example.docx
+        for _ in $(seq 1 30); do
+          code=$(curl -s --max-time 60 -o smoke.pdf -w '%{http_code}' \
+            -H 'Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document' \
+            --data-binary "@$docx" \
+            'http://localhost:8080/converter/convert?inputFormat=docx&outputFormat=pdf')
+          if [ "$code" = "200" ] && [ "$(head -c 4 smoke.pdf)" = "%PDF" ]; then
+            echo "conversion works, got $(wc -c < smoke.pdf) bytes of pdf"
+            exit 0
+          fi
+          echo "backend not ready yet (http $code)"
+          sleep 4
+        done
+        echo "libreoffice did not convert anything within 120s"
         exit 1
 
     - name: Run tests
