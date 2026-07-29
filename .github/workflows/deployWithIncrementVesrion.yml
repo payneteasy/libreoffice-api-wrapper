@@ -22,7 +22,17 @@ jobs:
       with:
         java-version: '21'
         distribution: temurin
-        cache: maven
+
+    # setup-java's own `cache: maven` saves nothing here: .mvn/wrapper/maven-wrapper.properties
+    # exists while the build runs plain mvn, and the wrapper cache path it derives from that file
+    # never appears -> the whole cache save aborts. Fixed upstream but not released yet, see
+    # https://github.com/actions/setup-java/issues/1150
+    - name: Cache the maven repository
+      uses: actions/cache@v6
+      with:
+        path: ~/.m2/repository
+        key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+        restore-keys: maven-${{ runner.os }}-
 
     - name: Build without test
       run: mvn -B --no-transfer-progress -Dmaven.test.skip=true clean package
